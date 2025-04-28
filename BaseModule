@@ -1,0 +1,23 @@
+// Find the number of working days overlapping between two date ranges
+
+DateAlign  = LAMBDA(StartDate,EndDate,CompareStart,CompareEnd,
+    LET(
+    StartDateX, VALUE(StartDate),
+    EndDateX, VALUE(EndDate),
+    CompareStartX, VALUE(CompareStart),
+    CompareEndX, VALUE(CompareEnd),
+    MAP(
+        StartDateX,
+        EndDateX,
+        CompareStartX,
+        CompareEndX,
+        LAMBDA(StartDateX, EndDateX, CompareStartX, CompareEndX,
+            IFS(
+                CompareEndX < StartDateX,
+                0,
+                CompareEndX >= StartDateX,
+                NETWORKDAYS(MAX(StartDateX, CompareStartX), MIN(CompareEndX, EndDateX))
+            )
+        )
+    )
+))
